@@ -1,0 +1,36 @@
+{
+  "name": "assignment1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "begin.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuangyuWang-NEU/webapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuangyuWang-NEU/webapp/issues"
+  },
+  "homepage": "https://github.com/GuangyuWang-NEU/webapp#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mocha": "^10.2.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.1.0",
+    "password-validator": "^5.3.0",
+    "run": "^1.4.0",
+    "sequelize": "^6.28.0",
+    "validate-password": "^1.0.4",
+    "validator": "^13.7.0"
+  }
+}
