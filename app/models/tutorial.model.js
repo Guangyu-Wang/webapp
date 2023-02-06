@@ -3,8 +3,9 @@ const bcrypt = require('bcrypt');
 module.exports = (sequelize, Sequelize) => {
   const Tutorial = sequelize.define("users", {
     id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
+      type: Sequelize.INTEGER,//Sequelize.UUID,
+      //defaultValue: null,//Sequelize.UUIDV4,
+      autoIncrement: true,
       primaryKey: true,
       allowNull:false
       },
