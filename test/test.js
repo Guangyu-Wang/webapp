@@ -12,7 +12,7 @@ describe("Test email/username when create:", () => {
         chai.request(app)
             .post("/api/user")
             .send({
-                "username": "123@gmail.com",
+                "username": "12345@gmail.com",
                 "password": "990512Wgy@",
                 "first_name": "guangyu",
                 "last_name": "wang"
