@@ -6,15 +6,15 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.post("/user", tutorials.create);
-    router.put("/user/update", tutorials.update);
-    router.get("/user/find", tutorials.findUser);
+    router.put("/user", tutorials.update);
+    router.get("/user", tutorials.findUser);
     router.get("/user/findid", tutorials.findUserById);
 
-    router.post("/production", production.createProduction);
-    router.get("/production/getbyid", production.findById);
-    router.put("/production/update", production.update);
-    router.patch("/production/update", production.update);
-    router.delete("/production/delete", production.delete);
+    router.post("/product", production.createProduction);
+    router.get("/product", production.findById);
+    router.put("/product", production.update);
+    router.patch("/product", production.update);
+    router.delete("/product", production.delete);
 
-    app.use('/api/', router);
+    app.use('/v1/', router);
 }
