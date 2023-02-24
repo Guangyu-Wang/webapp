@@ -1,0 +1,15 @@
+[Unit]
+Description=server.js - making your environment variables rad
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/webapp
+ExecStart=/usr/bin/node /opt/webapp/server.js
+Restart=always
+User=ec2-user
+Group=ec2-user
+Environment=NODE_ENV=production
+
+
+[Install]
+WantedBy=multi-user.target
