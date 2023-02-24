@@ -1,0 +1,66 @@
+{
+  "variables": {
+      "aws_access_key": "",
+      "aws_secret_key": ""
+    },
+  "builders": [{
+    "type": "amazon-ebs",
+
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "vpc_id":"vpc-02fda295c1c8aed43 ",
+    "source_ami": "ami-0dfcb1ef8550277af",
+    "instance_type": "t2.micro",
+    "ssh_username": "ec2-user",
+    "ami_name": "packer-example {{timestamp}}",
+    "ami_users":["317988945521","492677447136"],
+    "launch_block_device_mappings":{
+      "device_name":"/dev/xvda",
+      "volume_size" :50,
+      "volume_type" : "gp2",
+      "delete_on_termination" :true
+    }
+  }],
+  "provisioners":[
+    {
+      "type":"file",
+       "source":"install-app.sh",
+       "destination":"/tmp/"
+    },
+    {
+       "type":"file",
+       "source":"webapp.zip",
+       "destination":"/tmp/"
+    },
+    {
+      "type":"file",
+      "source":"webapp.service",
+      "destination":"/tmp/"
+    },
+    {
+      "type":"shell",
+      "inline":[
+        "chmod +x /tmp/install-app.sh",
+        "/tmp/install-app.sh",
+        "unzip /tmp/webapp.zip -d /tmp",
+        "if [ -d /tmp/directory ]; then echo 'Directory exists'; else echo 'Directory does not exist'; fi",
+        "sudo mv /tmp/webapp /opt/",
+        "sudo chmod 777 /opt",
+        " cd /opt/webapp",
+        "sudo npm install",
+        "sudo npm uninstall mysql --save",
+        "sudo npm install mariadb",
+        "sudo mv /tmp/webapp.service /etc/systemd/system/",
+        "sudo chown root:root /etc/systemd/system/webapp.service",
+        "sudo chmod 644 /etc/systemd/system/webapp.service",
+        "sudo systemctl daemon-reload",
+        "sudo systemctl start webapp.service",
+        "sudo systemctl enable webapp.service",
+        "sudo systemctl status webapp.service",
+        "sudo journalctl -u webapp.service"
+      ]
+      
+    }
+  ]
+}
