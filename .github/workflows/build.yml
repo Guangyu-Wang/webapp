@@ -1,0 +1,23 @@
+name: Build AMI
+
+on:
+  pull_request:
+    types:
+       - closed
+    branches:
+       - main
+       
+       
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        
+      - name: Build AMI
+        run: |
+           packer build my-template.json
+        env: 
+           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
