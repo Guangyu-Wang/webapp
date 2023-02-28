@@ -44,9 +44,7 @@
         "chmod +x /tmp/install-app.sh",
         "/tmp/install-app.sh",
         "sudo yum install unzip -y",
-        "sudo mv /tmp/webapp.zip /opt/webapp.zip",
-        "sudo chmod 777 /opt",
-        "unzip /opt/webapp.zip "
+        "unzip /tmp/webapp.zip "
       ]
       
     }
