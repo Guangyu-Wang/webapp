@@ -64,7 +64,6 @@
         "sudo systemctl enable webapp.service",
         "sudo systemctl status webapp.service",
         "sudo journalctl -u webapp.service"
-        
       ]
       
     }
