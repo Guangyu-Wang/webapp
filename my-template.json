@@ -47,7 +47,6 @@
         "cd /tmp",
         "sudo unzip ./webapp.zip ",
         "cd ./home/runner/work/webapp/webapp"
-        
       ]
       
     }
