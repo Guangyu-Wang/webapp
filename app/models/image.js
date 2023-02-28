@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 
+
 module.exports = (sequelize, Sequelize) => {
     const Image = sequelize.define("image", {
         id: {
