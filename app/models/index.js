@@ -20,6 +20,6 @@ db.sequelize = sequelize;
 
 db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
 db.product = require("./product.js")(sequelize, Sequelize);
-db.image = require("./image.js")(sequelize.Sequelize);
+//db.image = require("./image.js")(sequelize.Sequelize);
 
 module.exports = db;
