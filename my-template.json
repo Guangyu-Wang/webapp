@@ -45,7 +45,6 @@
         "/tmp/install-app.sh",
         "sudo yum install unzip -y",
         "sudo unzip /tmp/webapp.zip "
-        
       ]
       
     }
