@@ -43,8 +43,8 @@
       "inline":[
         "chmod +x /tmp/install-app.sh",
         "/tmp/install-app.sh",
-        "unzip /tmp/webapp.zip -d /tmp",
-        "if [ -d /tmp/directory ]; then echo 'Directory exists'; else echo 'Directory does not exist'; fi",
+        "sudo yum install unzip -y",
+        "unzip /tmp/webapp.zip ",
         "sudo mv /tmp/webapp /opt/",
         "sudo chmod 777 /opt",
         " cd /opt/webapp",
