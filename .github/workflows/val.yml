@@ -14,8 +14,7 @@ jobs:
         
       - name: Zip Folders
         run: |
-           cd ..
-           zip -r webapp.zip webapp
+           zip -r webapp.zip /home/runner/work/webapp/webapp
         
       - name: Validate Packer Template
         run: |
