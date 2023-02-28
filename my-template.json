@@ -46,7 +46,6 @@
         "sudo yum install unzip -y",
         "cd /tmp",
         "sudo unzip ./webapp.zip "
-
       ]
       
     }
