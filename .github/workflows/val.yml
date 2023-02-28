@@ -12,6 +12,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
+      - name: Zip Folders
+        run: |
+           cd ..
+           zip -r webapp.zip webapp
+        
       - name: Validate Packer Template
         run: |
            packer validate my-template.json
