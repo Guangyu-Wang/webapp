@@ -44,19 +44,7 @@
         "chmod +x /tmp/install-app.sh",
         "/tmp/install-app.sh",
         "sudo yum install unzip -y",
-        "sudo unzip /tmp/webapp.zip ",
-        "cd /tmp/home/runner/work/webapp/webapp",
-        "sudo npm install",
-        "sudo npm uninstall mysql --save",
-        "sudo npm install mariadb",
-        "sudo mv /tmp/webapp.service /etc/systemd/system/",
-        "sudo chown root:root /etc/systemd/system/webapp.service",
-        "sudo chmod 644 /etc/systemd/system/webapp.service",
-        "sudo systemctl daemon-reload",
-        "sudo systemctl start webapp.service",
-        "sudo systemctl enable webapp.service",
-        "sudo systemctl status webapp.service",
-        "sudo journalctl -u webapp.service"
+        "sudo unzip /tmp/webapp.zip "
       ]
       
     }
