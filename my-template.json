@@ -47,7 +47,7 @@
         "sudo mv /tmp/webapp.zip /opt/",
         "sudo chmod 777 /opt",
         "unzip /opt/webapp.zip ",
-        " cd /opt/webapp",
+        " cd /opt/home/runner/work/webapp/webapp",
         "sudo npm install",
         "sudo npm uninstall mysql --save",
         "sudo npm install mariadb",
