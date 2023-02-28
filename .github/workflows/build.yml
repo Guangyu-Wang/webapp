@@ -17,7 +17,7 @@ jobs:
         
       - name: Zip Folders
         run: |
-           zip -r webapp.zip
+           zip -r webapp.zip /home/runner/work/webapp/webapp
         
       - name: Build AMI
         run: |
