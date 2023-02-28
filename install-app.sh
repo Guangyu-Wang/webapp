@@ -6,10 +6,10 @@ sudo yum update -y
 sudo yum install -y git
 sudo yum install -y expect
 sudo npm install pm2 -g
-sudo npm install -g node-gyp
-sudo node-gyp configure
-sudo chown -R ec2-user /root/.cache/node-gyp
-sudo chmod -R 755 /root/.cache/node-gyp
+#sudo npm install -g node-gyp
+#sudo node-gyp configure
+#sudo chown -R ec2-user /root/.cache/node-gyp
+#sudo chmod -R 755 /root/.cache/node-gyp
 
 sudo yum install -y mariadb-server
 echo "hello world"
