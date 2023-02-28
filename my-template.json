@@ -47,7 +47,6 @@
         "cd /tmp",
         "sudo unzip ./webapp.zip ",
         "cd ./home/runner/work/webapp/webapp",
-        "sudo chown -R ec2-user:ec2-user /root/.cache/node-gyp/14.21.3",
         "sudo npm install",
         "sudo npm uninstall mysql --save",
         "sudo npm install mariadb",
