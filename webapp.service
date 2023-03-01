@@ -3,8 +3,8 @@ Description=server.js - making your environment variables rad
 After=network.target
 
 [Service]
-WorkingDirectory=/tmp/home/runner/work/webapp/webapp
-ExecStart=/usr/bin/node /tmp/home/runner/work/webapp/webapp/server.js
+WorkingDirectory=/home/ec2-user/home/runner/work/webapp/webapp
+ExecStart=/usr/bin/node /home/ec2-user/home/runner/work/webapp/webapp/server.js
 Restart=always
 User=ec2-user
 Group=ec2-user

@@ -31,12 +31,12 @@
     {
        "type":"file",
        "source":"webapp.zip",
-       "destination":"/tmp/"
+       "destination":"/home/ec2-user/webapp.zip"
     },
     {
       "type":"file",
       "source":"webapp.service",
-      "destination":"/tmp/"
+      "destination":"/tmp/webapp.service"
     },
     {
       "type":"shell",
@@ -44,9 +44,11 @@
         "chmod +x /tmp/install-app.sh",
         "/tmp/install-app.sh",
         "sudo yum install unzip -y",
-        "cd /tmp",
-        "sudo unzip ./webapp.zip ",
-        "cd ./home/runner/work/webapp/webapp"
+        "cd ~/ && unzip webapp.zip",
+        "cd ~/home/runner/work/webapp/webapp && npm i --only=prod",
+        "sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service",
+        "sudo systemctl enable webapp.service",
+        "sudo systemctl start webapp.service"
       ]
       
     }

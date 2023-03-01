@@ -1,15 +1,39 @@
 #!/bin/bash
-curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
-sudo yum install -y nodejs
+
 
 sudo yum update -y
+sudo yum install -y gcc-c++ make
+curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
+sudo yum install -y nodejs
 sudo yum install -y git
 sudo yum install -y expect
 sudo npm install pm2 -g
+#sudo npm install -g node-gyp
+#sudo node-gyp configure
+#sudo chown -R ec2-user /root/.cache/node-gyp
+#sudo chmod -R 755 /root/.cache/node-gyp
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+. ~/.nvm/nvm.sh
+
+nvm install 17.7.0
+
+node -e "console.log('Running Node.js ' + process.version)"
+
+nvm use node
+
+node -v
+
+npm install npm@latest -g
+
+npm -v
+
 
 sudo yum install -y mariadb-server
 echo "hello world"
 sudo npm install -g uuid
+
 
 
 #cd /Users/wangguangyu/Desktop/webapp || exit
