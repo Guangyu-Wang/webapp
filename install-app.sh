@@ -1,4 +1,4 @@
-#!/bin/bashnp
+#!/bin/bash
 
 
 sudo yum update -y
