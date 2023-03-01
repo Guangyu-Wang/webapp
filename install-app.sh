@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bashnp
 
 
 sudo yum update -y
@@ -52,8 +52,8 @@ sudo systemctl enable mariadb
 sudo mysql_secure_installation <<EOF
 
 y
-12345
-12345
+60446201
+60446201
 y
 y
 y
@@ -61,7 +61,7 @@ y
 EOF
 
 
-sudo mysql -uroot -p12345 <<EOF
+sudo mysql -uroot -p60446201 <<EOF
 CREATE DATABASE cloud;
 quit
 EOF
