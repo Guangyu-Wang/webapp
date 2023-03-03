@@ -21,7 +21,6 @@ sudo yum install  mariadb -y
 #sudo npm install -g uuid
 
 
-
 #cd /Users/wangguangyu/Desktop/webapp || exit
 #git clone git@github.com:GuangyuWang-NEU/webapp.git
 
