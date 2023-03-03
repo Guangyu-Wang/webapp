@@ -17,10 +17,9 @@ sudo npm install pm2 -g
 
 
 
-sudo yum install  mariadb
-echo "hello world"
-sudo npm install -g uuid
-
+sudo yum install  mariadb -y
+#echo "hello world"
+#sudo npm install -g uuid
 
 
 #cd /Users/wangguangyu/Desktop/webapp || exit
@@ -29,29 +28,29 @@ sudo npm install -g uuid
 #cd webapp || exit
 
 #sudo npm install
-sudo systemctl start mariadb
-systemctl status mariadb.service
-echo 'hello world2'
-sudo systemctl enable mariadb
+#sudo systemctl start mariadb 
+#systemctl status mariadb.service
+#echo 'hello world2'
+#sudo systemctl enable mariadb
 #expect -c 'spawn mysql_secure_installation; expect \"Enter current password for root (enter for none):\"; send \"\\r\"; expect \"Set root password?\"; send \"y\\r\"; expect \"New password:\"; send \"123456\\r\"; expect \"Re-enter new password:\"; send \"123456\\r\"; expect \"Remove anonymous users?\"; send \"y\\r\"; expect \"Disallow root login remotely?\"; send \"y\\r\"; expect \"Remove test database and access to it?\"; send \"y\\r\"; expect \"Reload privilege tables now?\"; send \"y\\r\"; interact;'
 #echo $'\n Y\n 12345\n 12345\n Y\n Y\n Y\n Y\n' | sudo mysql_secure_installation
 
-sudo mysql_secure_installation <<EOF
+#sudo mysql_secure_installation <<EOF
 
-y
-60446201
-60446201
-y
-y
-y
-y
-EOF
+#y
+#60446201
+#60446201
+#y
+#y
+#y
+#y
+#EOF
 
 
-sudo mysql -uroot -p60446201 <<EOF
-CREATE DATABASE cloud;
-quit
-EOF
+#sudo mysql -uroot -p60446201 <<EOF
+#CREATE DATABASE cloud;
+#quit
+#EOF
 
 #sudo mysql_secure_installation
 #mysql -uroot -p;
