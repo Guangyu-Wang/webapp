@@ -16,6 +16,7 @@ sudo npm install pm2 -g
 
 
 
+
 sudo yum install  mariadb -y
 #echo "hello world"
 #sudo npm install -g uuid
