@@ -13,21 +13,7 @@ sudo npm install pm2 -g
 #sudo chown -R ec2-user /root/.cache/node-gyp
 #sudo chmod -R 755 /root/.cache/node-gyp
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
-. ~/.nvm/nvm.sh
-
-nvm install 17.7.0
-
-node -e "console.log('Running Node.js ' + process.version)"
-
-nvm use node
-
-node -v
-
-npm install npm@latest -g
-
-npm -v
 
 
 sudo yum install  mariadb
