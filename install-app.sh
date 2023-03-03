@@ -13,24 +13,11 @@ sudo npm install pm2 -g
 #sudo chown -R ec2-user /root/.cache/node-gyp
 #sudo chmod -R 755 /root/.cache/node-gyp
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-
-. ~/.nvm/nvm.sh
-
-nvm install 17.7.0
-
-node -e "console.log('Running Node.js ' + process.version)"
-
-nvm use node
-
-node -v
-
-npm install npm@latest -g
-
-npm -v
 
 
-sudo yum install -y mariadb-server
+
+
+sudo yum install  mariadb
 echo "hello world"
 sudo npm install -g uuid
 
@@ -52,8 +39,8 @@ sudo systemctl enable mariadb
 sudo mysql_secure_installation <<EOF
 
 y
-12345
-12345
+60446201
+60446201
 y
 y
 y
@@ -61,7 +48,7 @@ y
 EOF
 
 
-sudo mysql -uroot -p12345 <<EOF
+sudo mysql -uroot -p60446201 <<EOF
 CREATE DATABASE cloud;
 quit
 EOF
