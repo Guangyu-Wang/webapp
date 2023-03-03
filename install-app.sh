@@ -30,7 +30,7 @@ npm install npm@latest -g
 npm -v
 
 
-sudo yum install -y mariadb-server
+sudo yum install  mariadb
 echo "hello world"
 sudo npm install -g uuid
 
