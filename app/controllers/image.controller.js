@@ -372,7 +372,10 @@ exports.delete = (req, res) => {
                                             id: id
                                         }
                                     }).then(data => {
-                                        return data;
+                                        console.log("production delete successfully");
+                                        res.status(204).send({
+                                         Message: "No content"
+                                         });
                                     }).catch(err => {
                                         res.status(400).send({
                                             Error: "Bad Request"
