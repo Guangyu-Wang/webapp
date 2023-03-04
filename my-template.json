@@ -46,9 +46,7 @@
         "sudo yum install unzip -y",
         "cd ~/ && unzip webapp.zip",
         "cd ~/home/runner/work/webapp/webapp && npm i --only=prod",
-        "sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service",
-        "sudo systemctl enable webapp.service",
-        "sudo systemctl start webapp.service"
+        "sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service"
       ]
       
     }
