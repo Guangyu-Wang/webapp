@@ -18,8 +18,8 @@ module.exports = app => {
     router.patch("/product", production.update);
     router.delete("/product", production.delete);
 
-    router.get("/product/:product_id/image", upload.single('image'),image.find);
-    router.post("/product/:product_id/image", image.upload);
+    router.get("/product/:product_id/image", image.find);
+    router.post("/product/:product_id/image", upload.single('image'),image.upload);
     router.get("/product/:product_id/oneimage", image.findById);
     router.delete("/product/:product_id/image", image.delete);
 
