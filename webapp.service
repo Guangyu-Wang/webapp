@@ -10,7 +10,7 @@ Restart=always
 RestartSec=5
 User=ec2-user
 Group=ec2-user
-Environment=NODE_ENV=production
+EnvironmentFile=/home/ec2-user/home/runner/work/webapp/webapp/.env
 
 
 [Install]
