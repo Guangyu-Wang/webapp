@@ -7,7 +7,7 @@ WorkingDirectory=/home/ec2-user/home/runner/work/webapp/webapp
 ExecStart=/usr/bin/node /home/ec2-user/home/runner/work/webapp/webapp/server.js
 Environment=NODE_PORT=8000
 Restart=always
-RestartSec=5
+RestartSec=15
 User=ec2-user
 Group=ec2-user
 EnvironmentFile=/home/ec2-user/home/runner/work/webapp/webapp/.env
