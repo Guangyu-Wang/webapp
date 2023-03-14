@@ -7,7 +7,8 @@ const Op = db.Sequelize.Op;
 const bcrypt = require('bcrypt');
 const Sequelize = require('sequelize');
 const path = require('path');
-const AWS=require('aws-sdk')
+const AWS = require('aws-sdk');
+const { v4: uuidv4 } = require('uuid');
 const S3_BUCKET = process.env.S3_BUCKET_NAME;
 
 
@@ -21,6 +22,8 @@ function parseHeader(head) {
 }
   
 exports.upload = (req, res) => {
+    const uuid = uuidv4();
+    const uuidString = uuid.toString();
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
@@ -98,7 +101,7 @@ exports.upload = (req, res) => {
                         };
                         var file = req.file;
                         uploadParams.Body = file.buffer;
-                        s3_object_string = pd + "/" + path.basename(file.originalname);
+                        s3_object_string = pd + "/" + uuidString+"/"+path.basename(file.originalname);
                         uploadParams.Key = s3_object_string;
                         s3.upload(uploadParams, async function (err, data) {
                             if (err) {
@@ -107,7 +110,8 @@ exports.upload = (req, res) => {
                                 Image.create({
                                     product_id: pd,
                                     file_name: file.originalname,
-                                    s3_bucket_path: data.Location
+                                    s3_bucket_path: data.Location,
+                                    uuid_string:uuidString
                                 }).then(data => {
                                     return data;
                                 }).then(data => {
@@ -238,6 +242,7 @@ exports.findById = (req, res) => {
     }
 
     const pd = req.params.product_id;
+    const iid = req.params.image_id;
 
     creds = parseHeader(req.headers.authorization);
 
@@ -271,7 +276,7 @@ exports.findById = (req, res) => {
                     });
                 } else {
                     const id = req.body.id;
-                    Image.findByPk(id).then(data => {
+                    Image.findByPk(iid).then(data => {
                         if (data.length != 0) {
                             data = JSON.parse(JSON.stringify(data));
                             res.send(data);
@@ -315,6 +320,7 @@ exports.delete = (req, res) => {
     }
 
     const pd = req.params.product_id;
+    const iid = req.params.image_id;
 
     creds = parseHeader(req.headers.authorization);
 
@@ -347,8 +353,8 @@ exports.delete = (req, res) => {
                         Error: "Forbidden"
                     });
                 } else {
-                    const id = req.body.id;
-                    Image.findByPk(id).then(data => {
+                    const id = req.params.image_id;
+                    Image.findByPk(iid).then(data => {
                         if (data.length != 0) {
                             s3 = new AWS.S3({
                                 accessKeyId: 'AKIAUUCM6HZYQCMNOXGH',
@@ -360,7 +366,7 @@ exports.delete = (req, res) => {
                                 Bucket: process.env.S3_BUCKET_NAME,
                                 Key: ''
                             };
-                            var key = pd + "/" + data.file_name;
+                            var key = pd + "/" +data.uuid_string+"/"+data.file_name;
                             Params.Key = key;
                             s3.deleteObject(Params, function (err, data) {
                                 if (err) {
