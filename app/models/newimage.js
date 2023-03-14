@@ -16,6 +16,9 @@ module.exports = (sequelize,Sequelize) => {
         },
         s3_bucket_path: {
             type: Sequelize.STRING,
+        },
+        uuid_string: {
+            type:Sequelize.STRING
         }
     }
     );

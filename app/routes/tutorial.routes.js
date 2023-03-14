@@ -20,8 +20,8 @@ module.exports = app => {
 
     router.get("/product/:product_id/image", image.find);
     router.post("/product/:product_id/image", upload.single('image'),image.upload);
-    router.get("/product/:product_id/oneimage", image.findById);
-    router.delete("/product/:product_id/image", image.delete);
+    router.get("/product/:product_id/image/:image_id", image.findById);
+    router.delete("/product/:product_id/image/:image_id", image.delete);
 
     app.use('/v1/', router);
 }
