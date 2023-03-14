@@ -10,7 +10,6 @@ Restart=always
 RestartSec=15
 User=ec2-user
 Group=ec2-user
-EnvironmentFile=/home/ec2-user/home/runner/work/webapp/webapp/.env
 
 
 [Install]
