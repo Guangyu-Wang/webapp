@@ -233,7 +233,7 @@ exports.findById = (req, res) => {
         return;
     }
 
-    if (!req.params.product_id||!req.body.id) {
+    if (!req.params.product_id||!req.params.image_id) {
         res.status(400).send({
             Error: "400 Bad Request-not give id"
         });
@@ -311,7 +311,7 @@ exports.delete = (req, res) => {
         return;
     }
 
-    if (!req.params.product_id||!req.body.id) {
+    if (!req.params.product_id||!req.params.image_id) {
         res.status(400).send({
             Error: "400 Bad Request-not give product id"
         });
