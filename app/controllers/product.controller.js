@@ -4,6 +4,7 @@ const Product = db.product;
 const Op = db.Sequelize.Op;
 const bcrypt = require('bcrypt');
 const Sequelize = require('sequelize');
+const logger = require('../config/logger.js');
 
 //parses authorization
 function parseHeader(head) {
@@ -19,6 +20,7 @@ exports.createProduction = (req, res) => {
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
+        logger.warn('Fail credentials');
         return;
     }
 
@@ -27,6 +29,7 @@ exports.createProduction = (req, res) => {
             Error: "400 Bad Request-empty params"
         });
         console.log("400 Bad Request-empty params");
+        logger.warn('Empty Params');
         return;
     }
 
@@ -54,6 +57,7 @@ exports.createProduction = (req, res) => {
             res.status(400).send({
                 Error: "400 Repeated sku"
             });
+            logger.warn('Repeated sku');
             return;
         } else {
             Tutorial.findOne({
@@ -83,24 +87,28 @@ exports.createProduction = (req, res) => {
                                     data = JSON.parse(JSON.stringify(data));
                                     console.log(data);
                                     res.status(201).send(data);
+                                    logger.info('Create production successfully');
                                 }).catch(Sequelize.ValidationError, function (err) {
                                     return res.status(422).send(err.errors);
                                 }).catch(err => {
                                     res.status(400).send({
                                         Error: "400 Bad Request-0"
                                     });
+                                    logger.warn('Bad Request');
                                     return;
                                 })
                             } else {
                                 res.status(400).send({
                                     Error: "400 quantity must in [0,100]"
                                 });
+                                logger.warn('Bad Request');
                             }
                         }
                         else {
                             res.status(401).send({
                                 Error: "401 Unauthorized"
                             });
+                            logger.warn('Unauthorized');
                         }
                     });
                 } else {
@@ -110,6 +118,7 @@ exports.createProduction = (req, res) => {
                 res.status(400).send({
                     Error: "400 Bad Request-1"
                 });
+                logger.warn('Bad Request');
             });
         }
     }).catch(err => {
@@ -117,6 +126,7 @@ exports.createProduction = (req, res) => {
         res.status(400).send({
             Error: "400 Bad Request-2"
         });
+        logger.warn('Bad Request');
     });
 
     
@@ -132,6 +142,7 @@ exports.findById = (req, res) => {
         if (data.length != 0) {
             data = JSON.parse(JSON.stringify(data));
             res.send(data);
+            logger.info('Find successfully');
         } else {
             throw err;
         }
@@ -139,6 +150,7 @@ exports.findById = (req, res) => {
         res.status(400).send({
             Error: "Bad Request"
         });
+        logger.warn('Bad Request');
     });
 };
 
@@ -148,6 +160,7 @@ exports.update = (req, res) => {
     if (!req.headers.authorization) {
         res.status(401).send({ Error: "401  Fail credentials!" });
         console.log("Bad Request-401 Error, Fail credentials");
+        logger.warn('Fail credentials');
         return;
     }
 
@@ -156,6 +169,7 @@ exports.update = (req, res) => {
             Error: "400 Bad Request-empty params"
         });
         console.log("400 Bad Request-empty params");
+        logger.warn('Empty Params');
         return;
     }
 
@@ -174,6 +188,7 @@ exports.update = (req, res) => {
             res.status(400).send({
                 Error: "400 Repeated sku"
             });
+            logger.warn('Repeated SKU');
             return;
         } else {
             Tutorial.findOne({
@@ -195,6 +210,7 @@ exports.update = (req, res) => {
                         res.status(400).send({
                             Error: "400 invalid prodution id"
                         });
+                        logger.warn('Invalid id');
                         return;
                     } else {
                         product_user_id = data.owner_user_id;
@@ -202,6 +218,7 @@ exports.update = (req, res) => {
                             res.status(403).send({
                                 Error: "Forbidden"
                             });
+                            logger.warn('Forbidden');
                         } else {
                             if (req.body.quantity >= 0 && req.body.quantity <= 100) {
                                 Product.update({
@@ -218,16 +235,19 @@ exports.update = (req, res) => {
                                         Message: "No content"
                                     });
                                     console.log("update successfully");
+                                    logger.info('update successfully');
                                 }
                                 ).catch(err => {
                                     res.status(400).send({
                                         Error: "400 Bad Request"
                                     });
+                                    logger.warn('Bad Request');
                                 });
                             } else {
                                 res.status(400).send({
                                     Error: "400 quantity must in [0,100]"
                                 });
+                                logger.warn('Bad Request');
                             }
                         }
                     }
@@ -236,17 +256,20 @@ exports.update = (req, res) => {
                     res.status(400).send({
                         Error: "400 Bad Request"
                     });
+                    logger.warn('Bad Request');
                 });
             }).catch(err => {
                 res.status(400).send({
                     Error: "400 Bad Request"
                 });
+                logger.warn('Bad Request');
             });
         }
     }).catch(err => {
         res.status(400).send({
             Error: "400 Bad Request"
         });
+        logger.warn('Bad Request');
     });
 
 };
@@ -256,6 +279,7 @@ exports.delete = (req, res) => {
     if (!req.headers.authorization) {
         res.status(401).send({ Error: "401  Fail credentials!" });
         console.log("Bad Request-401 Error, Fail credentials");
+        logger.warn('Fail credentials');
         return;
     }
 
@@ -264,6 +288,7 @@ exports.delete = (req, res) => {
             Error: "400 Bad Request-empty params"
         });
         console.log("400 Bad Request-empty params");
+        logger.warn('Empty params');
         return;
     }
 
@@ -281,6 +306,7 @@ exports.delete = (req, res) => {
             res.status(404).send({
                 Error: "404 this id has no records"
             });
+            logger.warn('No records');
             return;
         } else {
             product_user_id = data.owner_user_id;
@@ -296,6 +322,7 @@ exports.delete = (req, res) => {
                     res.status(403).send({
                         Error: "Forbidden"
                     });
+                    logger.warn('Forbidden');
                 } else {
                     Product.destroy({
                         where: {
@@ -308,11 +335,13 @@ exports.delete = (req, res) => {
                         res.status(204).send({
                             Message: "No content"
                         });
+                        logger.info('delete successfully');
                     }
                     ).catch(err => {
                         res.status(400).send({
                             Error: "Bad Request-no record"
                         });
+                        logger.warn('No records');
                     });
                 }
             }
@@ -320,12 +349,14 @@ exports.delete = (req, res) => {
                 res.status(400).send({
                     Error: "Bad Request-no record"
                 });
+                logger.warn('No records');
             });
         }
     }).catch(err => {
         res.status(400).send({
             Error: "Bad Request-no record"
         });
+        logger.warn('Bad Request');
     });
 };
 
