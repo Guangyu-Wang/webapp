@@ -10,6 +10,7 @@ const path = require('path');
 const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
 const S3_BUCKET = process.env.S3_BUCKET_NAME;
+const logger = require('../config/logger.js');
 
 
 //parses authorization
@@ -27,6 +28,7 @@ exports.upload = (req, res) => {
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
+        logger.warn('Fail credentials');
         return;
     }
 
@@ -35,6 +37,7 @@ exports.upload = (req, res) => {
             Error: "400 Bad Request-not give product id"
         });
         console.log("400 Bad Request-not give product id");
+        logger.warn('No such id');
         return;
     }
 
@@ -43,6 +46,7 @@ exports.upload = (req, res) => {
             Error: "400 Bad Request-no file"
         });
         console.log("400 Bad Request-no file");
+        logger.warn('No file');
         return;
     }
 
@@ -60,6 +64,7 @@ exports.upload = (req, res) => {
             Error: "400 Unsupported File Type"
         });
         console.log("400 Unsupported File Type");
+        logger.warn('Unsupported type');
     } else {
         Tutorial.findOne({
             where: {
@@ -80,6 +85,7 @@ exports.upload = (req, res) => {
                     res.status(400).send({
                         Error: "400 invalid prodution id"
                     });
+                    logger.warn('Invalid id');
                     return;
                 } else {
                     product_user_id = data.owner_user_id;
@@ -87,6 +93,7 @@ exports.upload = (req, res) => {
                         res.status(403).send({
                             Error: "Forbidden"
                         });
+                        logger.warn('Forbidden');
                     } else {
                         s3 = new AWS.S3({
                             accessKeyId: 'AKIAUUCM6HZYQCMNOXGH',
@@ -106,6 +113,7 @@ exports.upload = (req, res) => {
                         s3.upload(uploadParams, async function (err, data) {
                             if (err) {
                                 console.log("Error", err);
+                                logger.warn('Bad Request');
                             } if (data) {
                                 Image.create({
                                     product_id: pd,
@@ -118,11 +126,13 @@ exports.upload = (req, res) => {
                                     data = JSON.parse(JSON.stringify(data));
                                     console.log(data);
                                     res.status(201).send(data);
+                                    logger.info('Upload successfully');
                                 }).catch(err => {
                                     res.status(400).send({
                                         Error: "400 Bad Request-0"
                                     });
                                     console.log('Bad Request-0');
+                                    logger.warn('Bad Request');
                                     return;
                                 }
                                 );
@@ -135,11 +145,13 @@ exports.upload = (req, res) => {
                 res.status(400).send({
                     Error: "400 Bad Request"
                 });
+                logger.warn('Bad Request');
             });
         }).catch(err => {
             res.status(400).send({
                 Error: "400 Bad Request"
             });
+            logger.warn('Bad Request');
         });
     }
 };
@@ -148,6 +160,7 @@ exports.find = (req, res) => {
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
+        logger.warn('Fail credentials');
         return;
     }
 
@@ -156,6 +169,7 @@ exports.find = (req, res) => {
             Error: "400 Bad Request-not give product id"
         });
         console.log("400 Bad Request-not give product id");
+        logger.warn('No id');
         return;
     }
 
@@ -184,6 +198,7 @@ exports.find = (req, res) => {
                 res.status(400).send({
                     Error: "400 invalid prodution id"
                 });
+                logger.warn('Invalid id');
                 return;
             } else {
                 product_user_id = data.owner_user_id;
@@ -191,6 +206,7 @@ exports.find = (req, res) => {
                     res.status(403).send({
                         Error: "Forbidden"
                     });
+                    logger.warn('Forbidden');
                 } else {
                     Image.findAll({
                         where: {
@@ -200,6 +216,7 @@ exports.find = (req, res) => {
                         if (data.length != 0) {
                             data = JSON.parse(JSON.stringify(data));
                             res.send(data);
+                            logger.info('Find data');
                         } else {
                             throw err;
                         }
@@ -207,6 +224,7 @@ exports.find = (req, res) => {
                         res.status(400).send({
                             Error: "Bad Request"
                         });
+                        logger.warn('Bad Request');
                     });
                 }
             }
@@ -215,11 +233,13 @@ exports.find = (req, res) => {
             res.status(400).send({
                 Error: "400 Bad Request"
             });
+            logger.warn('Bad Request');
         });
     }).catch(err => {
         res.status(400).send({
             Error: "400 Bad Request"
         });
+        logger.warn('Bad Request');
     });
 
 
@@ -230,6 +250,7 @@ exports.findById = (req, res) => {
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
+        logger.warn('Fail credentials');
         return;
     }
 
@@ -238,6 +259,7 @@ exports.findById = (req, res) => {
             Error: "400 Bad Request-not give id"
         });
         console.log("400 Bad Request-not give id");
+        logger.warn('No id');
         return;
     }
 
@@ -267,6 +289,7 @@ exports.findById = (req, res) => {
                 res.status(400).send({
                     Error: "400 invalid prodution id"
                 });
+                logger.warn('No id');
                 return;
             } else {
                 product_user_id = data.owner_user_id;
@@ -274,12 +297,14 @@ exports.findById = (req, res) => {
                     res.status(403).send({
                         Error: "Forbidden"
                     });
+                    logger.warn('Forbidden');
                 } else {
                     const id = req.body.id;
                     Image.findByPk(iid).then(data => {
                         if (data.length != 0) {
                             data = JSON.parse(JSON.stringify(data));
                             res.send(data);
+                            logger.info('Find data');
                         } else {
                             throw err;
                         }
@@ -287,6 +312,7 @@ exports.findById = (req, res) => {
                         res.status(400).send({
                             Error: "Bad Request"
                         });
+                        logger.warn('Bad Request');
                     });
                 }
             }
@@ -295,11 +321,13 @@ exports.findById = (req, res) => {
             res.status(400).send({
                 Error: "400 Bad Request"
             });
+            logger.warn('Bad Request');
         });
     }).catch(err => {
         res.status(400).send({
             Error: "400 Bad Request"
         });
+        logger.warn('Bad Request');
     });
 
 };
@@ -308,6 +336,7 @@ exports.delete = (req, res) => {
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
+        logger.warn('Fail credentials');
         return;
     }
 
@@ -316,6 +345,7 @@ exports.delete = (req, res) => {
             Error: "400 Bad Request-not give product id"
         });
         console.log("400 Bad Request-not give product id");
+        logger.warn('No id');
         return;
     }
 
@@ -345,6 +375,7 @@ exports.delete = (req, res) => {
                 res.status(400).send({
                     Error: "400 invalid prodution id"
                 });
+                logger.warn('No id');
                 return;
             } else {
                 product_user_id = data.owner_user_id;
@@ -352,6 +383,7 @@ exports.delete = (req, res) => {
                     res.status(403).send({
                         Error: "Forbidden"
                     });
+                    logger.warn('Forbidden');
                 } else {
                     const id = req.params.image_id;
                     Image.findByPk(iid).then(data => {
@@ -371,6 +403,7 @@ exports.delete = (req, res) => {
                             s3.deleteObject(Params, function (err, data) {
                                 if (err) {
                                     console.log(err, err.stack);
+                                    logger.warn('Bad Request');
                                 } else {
                                     console.log(data);
                                     Image.destroy({
@@ -381,11 +414,13 @@ exports.delete = (req, res) => {
                                         console.log("production delete successfully");
                                         res.status(204).send({
                                          Message: "No content"
-                                         });
+                                        });
+                                        logger.warn('Delete successfully');
                                     }).catch(err => {
                                         res.status(400).send({
                                             Error: "Bad Request"
                                         });
+                                        logger.warn('Bad Request');
                                     });
                                 }
                             });
@@ -393,11 +428,13 @@ exports.delete = (req, res) => {
                             res.status(400).send({
                                 Error: "No image"
                             });
+                            logger.warn('No image');
                         }
                     }).catch(err => {
                         res.status(400).send({
                             Error: "Bad Request"
                         });
+                        logger.warn('Bad Request');
                     });
                 }
             }
@@ -406,11 +443,13 @@ exports.delete = (req, res) => {
             res.status(400).send({
                 Error: "400 Bad Request"
             });
+            logger.warn('Bad Request');
         });
     }).catch(err => {
         res.status(400).send({
             Error: "400 Bad Request"
         });
+        logger.warn('Bad Request');
     });
   
 };
