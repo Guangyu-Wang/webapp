@@ -39,6 +39,11 @@
       "destination":"/tmp/webapp.service"
     },
     {
+      "type":"file",
+      "source":"cloudwatch-config.json",
+      "destination":"/tmp/cloudwatch-config.json"
+    },
+    {
       "type":"shell",
       "inline":[
         "chmod +x /tmp/install-app.sh",
@@ -50,11 +55,7 @@
         "curl -O https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm",
         "sudo yum -y install amazon-cloudwatch-agent.rpm",
         "sudo systemctl enable amazon-cloudwatch-agent",
-        "sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl",
-        "-a fetch-config",
-        "-m ec2",
-        "-c file:/home/ec2-user/home/runner/work/webapp/webapp/cloudwatch-config.json",
-        "-s"
+        "sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/tmp/cloudwatch-config.json -s"
       ]
       
     }
