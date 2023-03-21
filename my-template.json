@@ -46,7 +46,15 @@
         "sudo yum install unzip -y",
         "cd ~/ && unzip webapp.zip",
         "cd ~/home/runner/work/webapp/webapp && npm i --only=prod",
-        "sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service"
+        "sudo mv /tmp/webapp.service /etc/systemd/system/webapp.service",
+        "wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm",
+        "sudo yum -U ./amazon-cloudwatch-agent.rpm",
+        "sudo systemctl enable amazon-cloudwatch-agent",
+        "sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl",
+        "-a fetch-config",
+        "-m ec2",
+        "-c file:/home/ec2-user/home/runner/work/webapp/webapp/cloudwatch-config.json",
+        "-s"
       ]
       
     }

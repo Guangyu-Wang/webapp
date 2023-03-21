@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/GuangyuWang-NEU/webapp#readme",
   "dependencies": {
+    "app-root-path": "^3.1.0",
     "aws-sdk": "^2.1327.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
@@ -37,6 +38,7 @@
     "sequelize": "^6.28.0",
     "uuid": "^9.0.0",
     "validate-password": "^1.0.4",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "winston": "^3.8.2"
   }
 }

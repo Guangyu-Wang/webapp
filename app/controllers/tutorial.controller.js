@@ -4,6 +4,7 @@ const Op = db.Sequelize.Op;
 const bcrypt = require('bcrypt');
 const Sequelize = require('sequelize');
 const saltRounds = 10;
+const logger = require('../config/logger.js');
 
 //create new users
 exports.create = (req, res) => {
@@ -19,6 +20,7 @@ exports.create = (req, res) => {
       Error: "400 Bad Request-empty"
     });
     console.log('Bad Request');
+    logger.warn("Bad Request-empty");
     return;
   }
   const users = {
@@ -37,6 +39,7 @@ exports.create = (req, res) => {
       Error: "400 Bad Request-invalid email"
     });
     console.log('Bad Request-email');
+    logger.warn('Invalid email');
     return;
   }
 
@@ -60,9 +63,10 @@ exports.create = (req, res) => {
       Error: "400 Bad Request-invalid password"
     });
     console.log('Bad Request-password');
+    logger.warn('Invalid Password');
     return;
   }
-
+  logger.info('create user');
   //check if the email exits in the database
   Tutorial.findAll({
     where: {
@@ -76,6 +80,7 @@ exports.create = (req, res) => {
         Error: "400 Bad Request-existed email"
       });
       console.log('Bad Request-existed email');
+      logger.warn('Existed Email');
       return;
     } else {
       Tutorial.create(users).then(data => {
@@ -84,11 +89,13 @@ exports.create = (req, res) => {
         data = JSON.parse(JSON.stringify(data));
         delete data.password;
         res.status(201).send(data);
+        logger.info('create user successfully');
       }).catch(err => {
         res.status(400).send({
           Error: "400 Bad Request-0"
         });
         console.log('Bad Request-0');
+        logger.warn('Bad Request');
         return;
       });
     }
@@ -98,6 +105,7 @@ exports.create = (req, res) => {
       Error: "400 Bad Request-1"
     });
     console.log('Bad Request-1');
+    logger.warn('Bad Request');
     return;
   });
 
@@ -122,6 +130,7 @@ exports.findUser = (req, res) => {
       Error: '403 Fail credentials!'
     });
     console.log('Bad Request');
+    logger.warn('Fail Credentials');
     return;
   }
 
@@ -132,11 +141,13 @@ exports.findUser = (req, res) => {
     if (result) {
       delete data.password;
       res.send(data);
+      logger.info('Get user data');
     } else {
       res.status(403).send({
         Error: '403 Fail credentials!'
       });
       console.log('Bad Request');
+      logger.warn('Fail Credentials');
     }
   }
 
@@ -160,6 +171,7 @@ exports.findUser = (req, res) => {
       Error: "400 Bad Request"
     });
     console.log('Bad Request');
+    logger.warn('Bad Request');
   });
 };
 
@@ -169,6 +181,7 @@ exports.update = (req, res) => {
   if (!req.headers.authorization) {
     res.status(403).send({ Error: "403 Fail credentials!" });
     console.log('Bad Request');
+    logger.warn('Fail Credentials');
     return;
   }
 
@@ -177,6 +190,7 @@ exports.update = (req, res) => {
       Error: "400 Bad Request-content empty"
     });
     console.log('Bad Request-content empty');
+    logger.warn('Content empty');
     return;
   }
 
@@ -185,6 +199,7 @@ exports.update = (req, res) => {
       Error: "400 Bad Request-time warning"
     });
     console.log('Bad Request-time warning');
+    logger.warn('Time warning');
     return;
   }
 
@@ -207,6 +222,7 @@ exports.update = (req, res) => {
       Error: "400 Bad Request-password invalid"
     });
     console.log('Bad Request-password invalid');
+    logger.warn('Invalid Password');
     return;
   }
 
@@ -253,6 +269,7 @@ exports.update = (req, res) => {
               }).then(data => {
                 delete data.password;
                 res.send(data);
+                logger.info('Update successfully');
               })
             }).catch(err => {
               console.log("error; " + err);
@@ -260,6 +277,7 @@ exports.update = (req, res) => {
                 Error: "Bad Request-no record"
               });
               console.log('Bad Request');
+              logger.warn('No record');
             });
           });
         }
@@ -268,6 +286,7 @@ exports.update = (req, res) => {
             Error: "Bad 403 Fail credentials!"
           });
           console.log('Bad Request');
+          logger.warn('Fail credentials');
         }
       });
     } else {
@@ -278,6 +297,7 @@ exports.update = (req, res) => {
       Error: "Bad Request-5"
     });
     console.log('Bad Request');
+    logger.warn('Bad Request');
   });
 
 
@@ -295,6 +315,7 @@ exports.findUserById = (req, res) => {
       data = JSON.parse(JSON.stringify(data));
       delete data.password;
       res.send(data);
+      logger.info('Find by id');
     } else {
       throw err;
     }
@@ -303,5 +324,6 @@ exports.findUserById = (req, res) => {
       Error: "Bad Request"
     });
     console.log('Bad Request');
+    logger.warn('Bad Request');
   });
 };
