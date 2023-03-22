@@ -11,6 +11,9 @@ const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
 const S3_BUCKET = process.env.S3_BUCKET_NAME;
 const logger = require('../config/logger.js');
+const SDC = require('statsd-client');
+const sdc = new SDC({host:'localhost',port:8125});
+
 
 
 //parses authorization
@@ -127,6 +130,7 @@ exports.upload = (req, res) => {
                                     console.log(data);
                                     res.status(201).send(data);
                                     logger.info('Upload successfully');
+                                    sdc.increment('endpoint.imageUpload');
                                 }).catch(err => {
                                     res.status(400).send({
                                         Error: "400 Bad Request-0"
@@ -217,6 +221,7 @@ exports.find = (req, res) => {
                             data = JSON.parse(JSON.stringify(data));
                             res.send(data);
                             logger.info('Find data');
+                            sdc.increment('endpoint.imageFind');
                         } else {
                             throw err;
                         }
@@ -305,6 +310,7 @@ exports.findById = (req, res) => {
                             data = JSON.parse(JSON.stringify(data));
                             res.send(data);
                             logger.info('Find data');
+                            sdc.increment('endpoint.imageId');
                         } else {
                             throw err;
                         }
@@ -416,6 +422,7 @@ exports.delete = (req, res) => {
                                          Message: "No content"
                                         });
                                         logger.warn('Delete successfully');
+                                        sdc.increment('endpoint.imageDelete');
                                     }).catch(err => {
                                         res.status(400).send({
                                             Error: "Bad Request"
