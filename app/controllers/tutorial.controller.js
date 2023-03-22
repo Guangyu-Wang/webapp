@@ -10,6 +10,7 @@ const sdc = new SDC({host:'localhost',port:8125});
 
 //create new users
 exports.create = (req, res) => {
+  sdc.increment('endpoint.userCreate');
   console.log("create user");
   console.log("req is:" + req.body.username);
   const username = req.body.username;
@@ -126,6 +127,7 @@ function parseHeader(head) {
 
 //get user information
 exports.findUser = (req, res) => {
+  sdc.increment('endpoint.userGet');
   //console.log(req.headers.authorization);
   //console.log(req.body);
   if (!req.headers.authorization) {
@@ -145,7 +147,6 @@ exports.findUser = (req, res) => {
       delete data.password;
       res.send(data);
       logger.info('Get user data');
-      sdc.increment('endpoint.userGet');
     } else {
       res.status(403).send({
         Error: '403 Fail credentials!'
@@ -182,6 +183,7 @@ exports.findUser = (req, res) => {
 //update
 exports.update = (req, res) => {
   console.log('update user');
+  sdc.increment('endpoint.userUpdate');
   if (!req.headers.authorization) {
     res.status(403).send({ Error: "403 Fail credentials!" });
     console.log('Bad Request');
@@ -274,7 +276,6 @@ exports.update = (req, res) => {
                 delete data.password;
                 res.send(data);
                 logger.info('Update successfully');
-                sdc.increment('endpoint.userUpdate');
               })
             }).catch(err => {
               console.log("error; " + err);
@@ -311,6 +312,7 @@ exports.update = (req, res) => {
 //find by id
 
 exports.findUserById = (req, res) => {
+  sdc.increment('endpoint.userId');
   console.log('user find by id');
   //const id = req.params.id;
   const id = req.body.id;
@@ -321,7 +323,6 @@ exports.findUserById = (req, res) => {
       delete data.password;
       res.send(data);
       logger.info('Find by id');
-      sdc.increment('endpoint.userId');
     } else {
       throw err;
     }
