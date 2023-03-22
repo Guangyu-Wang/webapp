@@ -19,6 +19,7 @@ function parseHeader(head) {
 
 //create production
 exports.createProduction = (req, res) => {
+    sdc.increment('endpoint.productCreate');
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
@@ -90,7 +91,7 @@ exports.createProduction = (req, res) => {
                                     console.log(data);
                                     res.status(201).send(data);
                                     logger.info('Create production successfully');
-                                    sdc.increment('endpoint.productCreate');
+                                    
                                 }).catch(Sequelize.ValidationError, function (err) {
                                     return res.status(422).send(err.errors);
                                 }).catch(err => {
@@ -140,13 +141,14 @@ exports.createProduction = (req, res) => {
 //find production by id
 
 exports.findById = (req, res) => {
+    sdc.increment('endpoint.productId');
     const id = req.body.id;
     Product.findByPk(id).then(data => {
         if (data.length != 0) {
             data = JSON.parse(JSON.stringify(data));
             res.send(data);
             logger.info('Find successfully');
-            sdc.increment('endpoint.productId');
+            
         } else {
             throw err;
         }
@@ -161,6 +163,7 @@ exports.findById = (req, res) => {
 //update production
 
 exports.update = (req, res) => {
+    sdc.increment('endpoint.productUpdate');
     if (!req.headers.authorization) {
         res.status(401).send({ Error: "401  Fail credentials!" });
         console.log("Bad Request-401 Error, Fail credentials");
@@ -240,7 +243,7 @@ exports.update = (req, res) => {
                                     });
                                     console.log("update successfully");
                                     logger.info('update successfully');
-                                    sdc.increment('endpoint.productUpdate');
+                                    
                                 }
                                 ).catch(err => {
                                     res.status(400).send({
@@ -281,6 +284,7 @@ exports.update = (req, res) => {
 
 //delete production
 exports.delete = (req, res) => {
+    sdc.increment('endpoint.productDelete');
     if (!req.headers.authorization) {
         res.status(401).send({ Error: "401  Fail credentials!" });
         console.log("Bad Request-401 Error, Fail credentials");
@@ -341,7 +345,7 @@ exports.delete = (req, res) => {
                             Message: "No content"
                         });
                         logger.info('delete successfully');
-                        sdc.increment('endpoint.productDelete');
+                        
                     }
                     ).catch(err => {
                         res.status(400).send({
