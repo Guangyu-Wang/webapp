@@ -28,6 +28,7 @@ function parseHeader(head) {
 exports.upload = (req, res) => {
     const uuid = uuidv4();
     const uuidString = uuid.toString();
+    sdc.increment('endpoint.imageUpload');
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
@@ -130,7 +131,7 @@ exports.upload = (req, res) => {
                                     console.log(data);
                                     res.status(201).send(data);
                                     logger.info('Upload successfully');
-                                    sdc.increment('endpoint.imageUpload');
+                                    
                                 }).catch(err => {
                                     res.status(400).send({
                                         Error: "400 Bad Request-0"
@@ -161,6 +162,7 @@ exports.upload = (req, res) => {
 };
 
 exports.find = (req, res) => {
+    sdc.increment('endpoint.imageFind');
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
@@ -221,7 +223,7 @@ exports.find = (req, res) => {
                             data = JSON.parse(JSON.stringify(data));
                             res.send(data);
                             logger.info('Find data');
-                            sdc.increment('endpoint.imageFind');
+                            
                         } else {
                             throw err;
                         }
@@ -252,6 +254,7 @@ exports.find = (req, res) => {
 };
 
 exports.findById = (req, res) => {
+    sdc.increment('endpoint.imageId');
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
@@ -310,7 +313,7 @@ exports.findById = (req, res) => {
                             data = JSON.parse(JSON.stringify(data));
                             res.send(data);
                             logger.info('Find data');
-                            sdc.increment('endpoint.imageId');
+                            
                         } else {
                             throw err;
                         }
@@ -339,6 +342,7 @@ exports.findById = (req, res) => {
 };
 
 exports.delete = (req, res) => {
+    sdc.increment('endpoint.imageDelete');
     if (!req.headers.authorization) {
         res.status(403).send({ Error: "403 403 Fail credentials!" });
         console.log("Bad Request-403 Error, Fail credentials");
@@ -422,7 +426,7 @@ exports.delete = (req, res) => {
                                          Message: "No content"
                                         });
                                         logger.warn('Delete successfully');
-                                        sdc.increment('endpoint.imageDelete');
+                                        
                                     }).catch(err => {
                                         res.status(400).send({
                                             Error: "Bad Request"
