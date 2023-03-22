@@ -36,6 +36,7 @@
     "path": "^0.12.7",
     "run": "^1.4.0",
     "sequelize": "^6.28.0",
+    "statsd-client": "^0.4.7",
     "uuid": "^9.0.0",
     "validate-password": "^1.0.4",
     "validator": "^13.7.0",
