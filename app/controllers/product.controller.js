@@ -5,6 +5,8 @@ const Op = db.Sequelize.Op;
 const bcrypt = require('bcrypt');
 const Sequelize = require('sequelize');
 const logger = require('../config/logger.js');
+const SDC = require('statsd-client');
+const sdc = new SDC({host:'localhost',port:8125});
 
 //parses authorization
 function parseHeader(head) {
@@ -88,6 +90,7 @@ exports.createProduction = (req, res) => {
                                     console.log(data);
                                     res.status(201).send(data);
                                     logger.info('Create production successfully');
+                                    sdc.increment('endpoint.productCreate');
                                 }).catch(Sequelize.ValidationError, function (err) {
                                     return res.status(422).send(err.errors);
                                 }).catch(err => {
@@ -143,6 +146,7 @@ exports.findById = (req, res) => {
             data = JSON.parse(JSON.stringify(data));
             res.send(data);
             logger.info('Find successfully');
+            sdc.increment('endpoint.productId');
         } else {
             throw err;
         }
@@ -236,6 +240,7 @@ exports.update = (req, res) => {
                                     });
                                     console.log("update successfully");
                                     logger.info('update successfully');
+                                    sdc.increment('endpoint.productUpdate');
                                 }
                                 ).catch(err => {
                                     res.status(400).send({
@@ -336,6 +341,7 @@ exports.delete = (req, res) => {
                             Message: "No content"
                         });
                         logger.info('delete successfully');
+                        sdc.increment('endpoint.productDelete');
                     }
                     ).catch(err => {
                         res.status(400).send({
