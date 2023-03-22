@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt');
 const Sequelize = require('sequelize');
 const saltRounds = 10;
 const logger = require('../config/logger.js');
+const SDC = require('statsd-client');
+const sdc = new SDC({host:'localhost',port:8125});
 
 //create new users
 exports.create = (req, res) => {
@@ -90,6 +92,7 @@ exports.create = (req, res) => {
         delete data.password;
         res.status(201).send(data);
         logger.info('create user successfully');
+        sdc.increment('endpoint.userCreate');
       }).catch(err => {
         res.status(400).send({
           Error: "400 Bad Request-0"
@@ -142,6 +145,7 @@ exports.findUser = (req, res) => {
       delete data.password;
       res.send(data);
       logger.info('Get user data');
+      sdc.increment('endpoint.userGet');
     } else {
       res.status(403).send({
         Error: '403 Fail credentials!'
@@ -270,6 +274,7 @@ exports.update = (req, res) => {
                 delete data.password;
                 res.send(data);
                 logger.info('Update successfully');
+                sdc.increment('endpoint.userUpdate');
               })
             }).catch(err => {
               console.log("error; " + err);
@@ -316,6 +321,7 @@ exports.findUserById = (req, res) => {
       delete data.password;
       res.send(data);
       logger.info('Find by id');
+      sdc.increment('endpoint.userId');
     } else {
       throw err;
     }
