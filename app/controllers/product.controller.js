@@ -91,7 +91,6 @@ exports.createProduction = (req, res) => {
                                     console.log(data);
                                     res.status(201).send(data);
                                     logger.info('Create production successfully');
-                                    
                                 }).catch(Sequelize.ValidationError, function (err) {
                                     return res.status(422).send(err.errors);
                                 }).catch(err => {
@@ -148,7 +147,6 @@ exports.findById = (req, res) => {
             data = JSON.parse(JSON.stringify(data));
             res.send(data);
             logger.info('Find successfully');
-            
         } else {
             throw err;
         }
@@ -243,7 +241,6 @@ exports.update = (req, res) => {
                                     });
                                     console.log("update successfully");
                                     logger.info('update successfully');
-                                    
                                 }
                                 ).catch(err => {
                                     res.status(400).send({
@@ -345,7 +342,6 @@ exports.delete = (req, res) => {
                             Message: "No content"
                         });
                         logger.info('delete successfully');
-                        
                     }
                     ).catch(err => {
                         res.status(400).send({

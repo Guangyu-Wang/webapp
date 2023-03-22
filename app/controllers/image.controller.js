@@ -131,7 +131,6 @@ exports.upload = (req, res) => {
                                     console.log(data);
                                     res.status(201).send(data);
                                     logger.info('Upload successfully');
-                                    
                                 }).catch(err => {
                                     res.status(400).send({
                                         Error: "400 Bad Request-0"
@@ -223,7 +222,6 @@ exports.find = (req, res) => {
                             data = JSON.parse(JSON.stringify(data));
                             res.send(data);
                             logger.info('Find data');
-                            
                         } else {
                             throw err;
                         }
@@ -313,7 +311,6 @@ exports.findById = (req, res) => {
                             data = JSON.parse(JSON.stringify(data));
                             res.send(data);
                             logger.info('Find data');
-                            
                         } else {
                             throw err;
                         }
@@ -426,7 +423,6 @@ exports.delete = (req, res) => {
                                          Message: "No content"
                                         });
                                         logger.warn('Delete successfully');
-                                        
                                     }).catch(err => {
                                         res.status(400).send({
                                             Error: "Bad Request"

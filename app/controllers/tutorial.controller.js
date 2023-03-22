@@ -93,6 +93,7 @@ exports.create = (req, res) => {
         delete data.password;
         res.status(201).send(data);
         logger.info('create user successfully');
+        sdc.increment('endpoint.userCreate');
       }).catch(err => {
         res.status(400).send({
           Error: "400 Bad Request-0"
@@ -146,7 +147,6 @@ exports.findUser = (req, res) => {
       delete data.password;
       res.send(data);
       logger.info('Get user data');
-      
     } else {
       res.status(403).send({
         Error: '403 Fail credentials!'
@@ -276,7 +276,6 @@ exports.update = (req, res) => {
                 delete data.password;
                 res.send(data);
                 logger.info('Update successfully');
-                
               })
             }).catch(err => {
               console.log("error; " + err);
@@ -324,7 +323,6 @@ exports.findUserById = (req, res) => {
       delete data.password;
       res.send(data);
       logger.info('Find by id');
-      
     } else {
       throw err;
     }
