@@ -334,3 +334,11 @@ exports.findUserById = (req, res) => {
     logger.warn('Bad Request');
   });
 };
+
+exports.health = (req, res) => {
+  logger.info("Health check!");
+  sdc.increment('healthz')
+
+  res.status(200);
+  res.json({ message: "webapp" });
+}
