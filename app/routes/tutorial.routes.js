@@ -7,6 +7,7 @@ module.exports = app => {
     const image = require("../controllers/image.controller");
     var router = require("express").Router();
 
+    router.get("/healthz", tutorials.health);
     router.post("/user", tutorials.create);
     router.put("/user", tutorials.update);
     router.get("/user", tutorials.findUser);
