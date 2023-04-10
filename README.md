@@ -9,4 +9,5 @@ Clone repository from GitHub. Open the code in the code editor of your choice, a
 
 There are four API endpoints: create new users:localhost:8080/api/user update users' information:localhost:8080/api/user/update find users' information:localhost:8080/api/user/find find by id:localhost:8080/api/user/findid
 
-That's all
+Command to Import SSL Certificate:
+aws --profile demo acm import-certificate --certificate fileb://prod_guangyuwang_me.crt --certificate-chain fileb://prod_guangyuwang_me.ca-bundle --private-key fileb://prod.guangyuwang.me.key
