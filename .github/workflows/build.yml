@@ -25,3 +25,41 @@ jobs:
         env: 
            AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
            AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+           
+      - name: Get latest AMI ID
+        id: get-ami-id
+        run: |
+          latest_ami_id=$(docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY amazon/aws-cli ec2 describe-images --region us-east-1 --owners 317988945521 --query "sort_by(Images, &CreationDate)[-1].ImageId" --output text)
+          echo "Latest AMI ID: $latest_ami_id"
+          echo "::set-output name=ami_id::$latest_ami_id"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          
+      - name: Create new Launch Template version
+        run: |
+          docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY amazon/aws-cli ec2 create-launch-template-version --launch-template-name TEMPLATE_NAME --version-description "New version with updated AMI" --launch-template-data "{\"ImageId\":\"${{ steps.get-ami-id.outputs.ami_id }}\"}"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+          
+      - name: Update Auto Scaling Group to use the new Launch Template
+        run: |
+         docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY amazon/aws-cli autoscaling update-auto-scaling-group --auto-scaling-group-name AUTO_SCALING_NAME --launch-template-name TEMPLATE_NAME
+        env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+         TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+         AUTO_SCALING_NAME: ${{ secrets.AUTO_SCALING_NAME}}
+
+      - name: Start Instance Refresh for Auto Scaling Group
+        run: |
+         existing_auto_scaling_group_name="your-existing-auto-scaling-group-name"
+         docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY amazon/aws-cli autoscaling start-instance-refresh --auto-scaling-group-name AUTO_SCALING_NAME
+        env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+         TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+         AUTO_SCALING_NAME: ${{ secrets.AUTO_SCALING_NAME}}
+
