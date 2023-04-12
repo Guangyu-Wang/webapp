@@ -43,3 +43,23 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
           TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+          
+      - name: Update Auto Scaling Group to use the new Launch Template
+        run: |
+         docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY amazon/aws-cli autoscaling update-auto-scaling-group --auto-scaling-group-name AUTO_SCALING_NAME --launch-template-name TEMPLATE_NAME
+        env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+         TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+         AUTO_SCALING_NAME: ${{ secrets.AUTO_SCALING_NAME}}
+
+      - name: Start Instance Refresh for Auto Scaling Group
+        run: |
+         existing_auto_scaling_group_name="your-existing-auto-scaling-group-name"
+         docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY amazon/aws-cli autoscaling start-instance-refresh --auto-scaling-group-name AUTO_SCALING_NAME
+        env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+         TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+         AUTO_SCALING_NAME: ${{ secrets.AUTO_SCALING_NAME}}
+
