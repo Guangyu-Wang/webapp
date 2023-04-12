@@ -38,7 +38,7 @@ jobs:
           
       - name: Create new Launch Template version
         run: |
-          docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY amazon/aws-cli ec2 create-launch-template-version --launch-template-name TEMPLATE_NAME --version-description "New version with updated AMI" --launch-template-data "{\"ImageId\":\"${{ steps.get-ami-id.outputs.ami_id }}\"}"
+          aws ec2 create-launch-template-version --launch-template-name TEMPLATE_NAME --version-description WebVersion2 --source-version 1 --launch-template-data "ImageId=${{env.TEMPLATE_NAME}}"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
