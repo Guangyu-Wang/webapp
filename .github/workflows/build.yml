@@ -58,7 +58,6 @@ jobs:
       - name: Make Launch Template newest version
         run: |
           aws ec2 modify-launch-template --launch-template-id ${{steps.get-tem-id.outputs.template_id}} --region us-east-1 --default-version '$Latest'
-          
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
