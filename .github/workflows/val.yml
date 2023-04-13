@@ -40,6 +40,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
           TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
           
+          
       - name: Create new Launch Template version
         run: |
           aws ec2 create-launch-template-version --launch-template-id ${{steps.get-tem-id.outputs.template_id}} --version-description WebVersion2 --source-version 1 --region us-east-1 --launch-template-data '{"ImageId":"${{steps.get-ami-id.outputs.ami_id}}"} '
@@ -47,6 +48,10 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
           TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+      
+      - name: Make Launch Template newest version
+        run: |
+          aws ec2 modify-launch-template --launch-template-id ${{steps.get-tem-id.outputs.template_id}} --region us-east-1 --default-version '$Latest'
           
       - name: Update Auto Scaling Group to use the new Launch Template
         run: |
