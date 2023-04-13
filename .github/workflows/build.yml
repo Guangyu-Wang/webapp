@@ -48,7 +48,7 @@ jobs:
           
       - name: Create new Launch Template version
         run: |
-          aws ec2 create-launch-template-version --launch-template-id ${{steps.get-tem-id.outputs.template_id}} --version-description WebVersion2 --source-version 1 --launch-template-data '{"ImageId":"${{steps.get-ami-id.outputs.ami_id}}"}'
+          aws ec2 create-launch-template-version --launch-template-id ${{steps.get-tem-id.outputs.template_id}} --version-description WebVersion2 --source-version 1 --launch-template-data '{"ImageId":"${{steps.get-ami-id.outputs.ami_id}}" --region us-east-1}'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
