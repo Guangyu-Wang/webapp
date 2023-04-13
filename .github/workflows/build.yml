@@ -36,9 +36,20 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
           
+      - name: Get Template id
+        id: get-tem-id
+        run: |
+           launch_template_id=$(aws ec2 describe-launch-templates -MPLATlaunch_template_id=$(aws ec2 describe-launch-templates --launch-template-names TEMPLATE_NAME --query 'LaunchTemplates[0].LaunchTemplateId' --output text)E_NAME --query 'LaunchTemplates[0].LaunchTemplateId' --output text)
+           echo "::set-output name=template_id::$launch_template_id"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+          
       - name: Create new Launch Template version
         run: |
-          aws ec2 create-launch-template-version --launch-template-name TEMPLATE_NAME --version-description WebVersion2 --source-version 1 --launch-template-data '{"ImageId":"${{steps.get-ami-id.outputs.ami_id}}"}'
+          
+          aws ec2 create-launch-template-version --launch-template- ${{steps.get-tem-id.outputs.template_id}} --version-description WebVersion2 --source-version 1 --launch-template-data '{"ImageId":"${{steps.get-ami-id.outputs.ami_id}}"}'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
