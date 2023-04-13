@@ -39,7 +39,7 @@ jobs:
       - name: Get Template id
         id: get-tem-id
         run: |
-           launch_template_id=$(aws ec2 describe-launch-templates --launch-template-names TEMPLATE_NAME --query 'LaunchTemplates[0].LaunchTemplateId' --region us-east-1 --output text)
+           launch_template_id=$(aws ec2 describe-launch-templates --launch-template-names ${{env.TEMPLATE_NAME}} --query 'LaunchTemplates[0].LaunchTemplateId' --region us-east-1 --output text)
            echo "::set-output name=template_id::$launch_template_id"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
