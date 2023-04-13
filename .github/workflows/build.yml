@@ -25,3 +25,58 @@ jobs:
         env: 
            AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
            AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+           
+      - name: Get latest AMI ID
+        id: get-ami-id
+        run: |
+          latest_ami_id=$(docker run --rm -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY amazon/aws-cli ec2 describe-images --region us-east-1 --owners 317988945521 --query "sort_by(Images, &CreationDate)[-1].ImageId" --output text)
+          echo "Latest AMI ID: $latest_ami_id"
+          echo "::set-output name=ami_id::$latest_ami_id"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          
+      - name: Get Template id
+        id: get-tem-id
+        run: |
+           launch_template_id=$(aws ec2 describe-launch-templates --launch-template-names ${{env.TEMPLATE_NAME}} --query 'LaunchTemplates[0].LaunchTemplateId' --region us-east-1 --output text)
+           echo "::set-output name=template_id::$launch_template_id"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+          
+          
+      - name: Create new Launch Template version
+        run: |
+          aws ec2 create-launch-template-version --launch-template-id ${{steps.get-tem-id.outputs.template_id}} --version-description WebVersion2 --source-version 1 --region us-east-1 --launch-template-data '{"ImageId":"${{steps.get-ami-id.outputs.ami_id}}"} '
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+      
+      - name: Make Launch Template newest version
+        run: |
+          aws ec2 modify-launch-template --launch-template-id ${{steps.get-tem-id.outputs.template_id}} --region us-east-1 --default-version '$Latest'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          
+      - name: Update AutoScaling Group to use the new Launch Template
+        run: |
+         aws autoscaling update-auto-scaling-group --auto-scaling-group-name ${{env.AUTO_SCALING_NAME}} --region us-east-1 --launch-template LaunchTemplateId=${{steps.get-tem-id.outputs.template_id}},Version='$Latest'
+        env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+         TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+         AUTO_SCALING_NAME: ${{ secrets.AUTO_SCALING_NAME}}
+
+      - name: Start Instance Refresh for Auto Scaling Group
+        run: |
+         aws autoscaling start-instance-refresh --auto-scaling-group-name ${{env.AUTO_SCALING_NAME}} --region us-east-1
+        env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+         TEMPLATE_NAME: ${{ secrets.TEMPLATE_NAME}}
+         AUTO_SCALING_NAME: ${{ secrets.AUTO_SCALING_NAME}}
+
