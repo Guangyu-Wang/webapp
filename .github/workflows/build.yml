@@ -59,7 +59,11 @@ jobs:
         run: |
           aws ec2 modify-launch-template --launch-template-id ${{steps.get-tem-id.outputs.template_id}} --region us-east-1 --default-version '$Latest'
           
-      - name: Update Auto Scaling Group to use the new Launch Template
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          
+      - name: Update AutoScaling Group to use the new Launch Template
         run: |
          aws autoscaling update-auto-scaling-group --auto-scaling-group-name ${{env.AUTO_SCALING_NAME}} --region us-east-1 --launch-template LaunchTemplateId=${{steps.get-tem-id.outputs.template_id}},Version='$Latest'
         env:
