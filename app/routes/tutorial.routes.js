@@ -24,7 +24,7 @@ module.exports = app => {
     router.get("/product/:product_id/image/:image_id", image.findById);
     router.delete("/product/:product_id/image/:image_id", image.delete);
 
-    router.get("/health", tutorials.health);
+    router.get("/unhealth", tutorials.health);
 
     app.use('/v1/', router);
 }
