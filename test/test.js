@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 describe("Test email/username when create:", () => {
     it("Email/username must be valid", (done) => {
         chai.request(app)
-            .post("/v1/user")
+            .post("/v2/user")
             .send({
                 "username": "12345@gmail.com",
                 "password": "990512Wgy@",

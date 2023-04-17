@@ -26,5 +26,5 @@ module.exports = app => {
 
     router.get("/unhealth", tutorials.health);
 
-    app.use('/v1/', router);
+    app.use('/v2/', router);
 }
